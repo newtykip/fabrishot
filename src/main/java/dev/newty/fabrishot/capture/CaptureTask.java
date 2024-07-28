@@ -50,7 +50,7 @@ public class CaptureTask {
     }
 
     public float getScaleFactor() {
-        if (Config.DISABLE_GUI_SCALING) {
+        if (Config.get().disableGuiScaling) {
             return 1;
         }
 
@@ -63,35 +63,35 @@ public class CaptureTask {
     }
 
     public boolean onRenderTick() {
+        Config config = Config.get();
+
         // override viewport size (the following frame will be black)
         if (frame == 0) {
             displayWidth = MinecraftInterface.getDisplayWidth();
             displayHeight = MinecraftInterface.getDisplayHeight();
             hudHidden = MinecraftClient.getInstance().options.hudHidden;
 
-            int width = Config.CAPTURE_WIDTH;
-            int height = Config.CAPTURE_HEIGHT;
+            int width = config.captureWidth;
+            int height = config.captureHeight;
 
             // resize viewport/framebuffer
             MinecraftInterface.resize(width, height);
-            MinecraftClient.getInstance().options.hudHidden |= Config.HIDE_HUD;
-        } else if (frame >= Config.CAPTURE_DELAY) {
+            MinecraftClient.getInstance().options.hudHidden |= config.hideHud;
+        } else if (frame >= config.captureDelay) {
             // capture screenshot and restore viewport size
             try {
                 FramebufferCapturer fbc = new FramebufferCapturer();
                 fbc.capture();
 
-                if (Config.SAVE_FILE) {
-                    Util.getIoWorkerExecutor().execute(() -> {
-                        FramebufferWriter fbw = new FramebufferWriter(file, fbc);
+                Util.getIoWorkerExecutor().execute(() -> {
+                    FramebufferWriter fbw = new FramebufferWriter(file, fbc);
 
-                        try {
-                            fbw.write();
-                        } catch (IOException exception) {
-                            exception.printStackTrace();
-                        }
-                    });
-                }
+                    try {
+                        fbw.write();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
+                });
             } finally {
                 // restore viewport/framebuffer
                 MinecraftInterface.resize(displayWidth, displayHeight);
@@ -100,6 +100,6 @@ public class CaptureTask {
         }
 
         frame++;
-        return frame > Config.CAPTURE_DELAY;
+        return frame > config.captureDelay;
     }
 }

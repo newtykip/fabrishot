@@ -2,7 +2,7 @@ package dev.newty.fabrishot.mixins;
 
 import dev.newty.fabrishot.Fabrishot;
 import dev.newty.fabrishot.config.Config;
-import dev.newty.fabrishot.config.NametagVisibility;
+import dev.newty.fabrishot.config.nametags.NametagVisibility;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -21,7 +21,7 @@ public class EntityRendererMixin<T extends Entity> {
         if (Fabrishot.isInCapture()) {
             boolean isPlayer = entity instanceof PlayerEntity || entity instanceof ArmorStandEntity;
 
-            switch (Config.NAMETAG_VISIBILITY) {
+            switch (Config.get().nametagVisibility) {
                 case NametagVisibility.None -> ci.cancel();
                 case NametagVisibility.Entities -> {
                     if (isPlayer) ci.cancel();

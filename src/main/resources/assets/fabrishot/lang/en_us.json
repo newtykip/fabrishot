@@ -1,18 +1,24 @@
 {
   "fabrishot.config.title": "Fabrishot",
-  "fabrishot.config.category": "Screenshot configuration",
-  "fabrishot.config.custom_file_name": "Use different filename format",
-  "fabrishot.config.custom_file_name.tooltip": "Use %time% for the time,\n %world% for world or server name",
-  "fabrishot.config.override_screenshot_key": "Override normal screenshot with Fabrishot",
-  "fabrishot.config.hide_hud": "Automatically hide the HUD",
-  "fabrishot.config.nametag_visibility": "Nametag visibility",
-  "fabrishot.config.show_own_nametag": "Show own nametag",
-  "fabrishot.config.save_file": "Save the screenshot file",
-  "fabrishot.config.disable_gui_scaling": "Disable GUI scaling",
-  "fabrishot.config.width": "Screenshot width",
-  "fabrishot.config.height": "Screenshot height",
-  "fabrishot.config.delay": "Capture delay",
-  "fabrishot.config.delay.tooltip": "Frames to wait after resizing. Tweak for better exposure with shaders",
-  "fabrishot.config.file_format": "File format",
-  "key.fabrishot.screenshot": "Take large screenshot"
+  "fabrishot.config.yes": "Yes",
+  "fabrishot.config.no": "No",
+
+  "fabrishot.config.screenshot": "Screenshot",
+
+  "fabrishot.config.screenshot.size": "Screenshot size",
+  "fabrishot.config.screenshot.size.width": "Screenshot width",
+  "fabrishot.config.screenshot.size.height": "Screenshot height",
+
+  "fabrishot.config.screenshot.delay": "Capture delay",
+  "fabrishot.config.screenshot.delay.description": "Frames to wait after resizing. Tweak for better exposure with shaders.",
+
+  "fabrishot.config.screenshot.format": "File format",
+
+  "fabrishot.config.gui": "GUI",
+  "fabrishot.config.gui.scaling": "Disable GUI scaling",
+  "fabrishot.config.gui.hide_hud": "Automatically hide the HUD",
+
+  "fabrishot.config.gui.nametags": "Nametag rendering",
+  "fabrishot.config.gui.nametags.visibility": "Nametag visibility",
+  "fabrishot.config.gui.nametags.own": "Shown own nametag"
 }

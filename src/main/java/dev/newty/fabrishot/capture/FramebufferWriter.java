@@ -59,7 +59,7 @@ public class FramebufferWriter {
         Dimension dim = fbc.getCaptureDimension();
 
         try (WriteCallback callback = new WriteCallback(fc)) {
-            switch (Config.CAPTURE_FILE_FORMAT) {
+            switch (Config.get().captureFileFormat) {
                 case PNG -> STBImageWrite.stbi_write_png_to_func(callback, 0L, dim.width(), dim.height(), fbc.getChannelCount(), fbc.getDataBuffer(), 0);
                 case JPG -> STBImageWrite.stbi_write_jpg_to_func(callback, 0L, dim.width(), dim.height(), fbc.getChannelCount(), fbc.getDataBuffer(), 90);
                 case TGA -> STBImageWrite.stbi_write_tga_to_func(callback, 0L, dim.width(), dim.height(), fbc.getChannelCount(), fbc.getDataBuffer());

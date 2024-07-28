@@ -7,10 +7,10 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ModMenuBridge implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        if (FabricLoader.getInstance().isModLoaded("cloth-config2")) {
-            return new ClothConfigBridge();
+        if (FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3")) {
+            return Config::createScreen;
         } else {
-            return InstallClothConfigScreen::new;
+            return InstallYACLScreen::new;
         }
     }
 }

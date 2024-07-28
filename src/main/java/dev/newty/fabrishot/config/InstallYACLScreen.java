@@ -7,11 +7,11 @@ import net.minecraft.client.util.NarratorManager;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
-public class InstallClothConfigScreen extends Screen {
-    private static final Text INSTALL_CLOTH_CONFIG = Text.of("You must install Cloth Config");
+public class InstallYACLScreen extends Screen {
+    private static final Text INSTALL_CLOTH_CONFIG = Text.of("You must install Yet Another Config Lib (YACL)");
     private final Screen parent;
 
-    public InstallClothConfigScreen(Screen parent) {
+    public InstallYACLScreen(Screen parent) {
         super(NarratorManager.EMPTY);
         this.parent = parent;
     }

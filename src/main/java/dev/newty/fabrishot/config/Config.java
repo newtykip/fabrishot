@@ -1,68 +1,199 @@
 package dev.newty.fabrishot.config;
 
+import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
+import dev.isxander.yacl3.api.controller.ControllerBuilder;
+import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
+import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
+import dev.isxander.yacl3.config.v2.api.SerialEntry;
+import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import dev.newty.fabrishot.Fabrishot;
+import dev.newty.fabrishot.config.controller.ShortFieldControllerBuilder;
+import dev.newty.fabrishot.config.nametags.NametagVisibility;
+import dev.newty.fabrishot.config.nametags.OwnNametagVisibility;
 import net.fabricmc.loader.api.FabricLoader;
-import org.apache.logging.log4j.LogManager;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
+import java.lang.reflect.Field;
 import java.nio.file.Path;
-import java.util.Properties;
 
 public class Config {
-    public static String CUSTOM_FILE_NAME = "huge_%time%";
-    public static boolean OVERRIDE_SCREENSHOT_KEY = false;
-    public static boolean HIDE_HUD = false;
-    public static NametagVisibility NAMETAG_VISIBILITY = NametagVisibility.All;
-    public static boolean SHOWN_OWN_NAMETAG = true;
-    public static boolean SAVE_FILE = true;
-    public static boolean DISABLE_GUI_SCALING = false;
-    public static int CAPTURE_WIDTH = 3840;
-    public static int CAPTURE_HEIGHT = 2160;
-    public static int CAPTURE_DELAY = 3;
-    public static FileFormat CAPTURE_FILE_FORMAT = FileFormat.PNG;
+    // Screenshot
 
-    private static final Path CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fabrishot.properties");
+    @SerialEntry
+    public short captureWidth = 3840;
 
-    static {
-        try (BufferedReader reader = Files.newBufferedReader(CONFIG)) {
-            Properties properties = new Properties();
-            properties.load(reader);
+    @SerialEntry
+    public short captureHeight = 2160;
 
-            Config.CUSTOM_FILE_NAME = properties.getProperty("custom_file_name", "huge_%time%");
-            Config.OVERRIDE_SCREENSHOT_KEY = Boolean.parseBoolean(properties.getProperty("override_screenshot_key"));
-            Config.HIDE_HUD = Boolean.parseBoolean(properties.getProperty("hide_hud"));
-            Config.NAMETAG_VISIBILITY = NametagVisibility.valueOf(properties.getProperty("nametag_visibility"));
-            Config.SHOWN_OWN_NAMETAG = Boolean.parseBoolean(properties.getProperty("show_own_nametag"));
-            Config.SAVE_FILE = Boolean.parseBoolean(properties.getProperty("save_file"));
-            Config.DISABLE_GUI_SCALING = Boolean.parseBoolean(properties.getProperty("disable_gui_scaling"));
-            Config.CAPTURE_WIDTH = Integer.parseInt(properties.getProperty("width"));
-            Config.CAPTURE_HEIGHT = Integer.parseInt(properties.getProperty("height"));
-            Config.CAPTURE_DELAY = Integer.parseInt(properties.getProperty("delay"));
-            Config.CAPTURE_FILE_FORMAT = FileFormat.valueOf(properties.getProperty("file_format"));
-        } catch (Exception ignored) {
-            save();
-        }
+    @SerialEntry
+    public short captureDelay = 3;
+
+    @SerialEntry
+    public FileFormat captureFileFormat = FileFormat.PNG;
+
+    // GUI
+
+    @SerialEntry
+    public boolean disableGuiScaling = false;
+
+    @SerialEntry
+    public boolean hideHud = false;
+
+    @SerialEntry
+    public NametagVisibility nametagVisibility = NametagVisibility.All;
+
+    @SerialEntry
+    public OwnNametagVisibility ownNametagVisibility = OwnNametagVisibility.Screenshot;
+
+    private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(Fabrishot.MOD_ID + ".json5");
+    private static final ConfigClassHandler<Config> HANDLER = ConfigClassHandler.createBuilder(Config.class)
+            .id(Identifier.of(Fabrishot.MOD_ID, "config"))
+            .serializer(config -> GsonConfigSerializerBuilder.create(config)
+                    .setPath(CONFIG_PATH)
+                    .setJson5(true)
+                    .build()
+            )
+            .build();
+
+    private static Text getText(String key) {
+        return Text.translatable("fabrishot.config." + key);
     }
 
-    static void save() {
-        Properties properties = new Properties();
-        properties.put("custom_file_name", Config.CUSTOM_FILE_NAME);
-        properties.put("override_screenshot_key", String.valueOf(Config.OVERRIDE_SCREENSHOT_KEY));
-        properties.put("hide_hud", String.valueOf(Config.HIDE_HUD));
-        properties.put("save_file", String.valueOf(Config.SAVE_FILE));
-        properties.put("disable_gui_scaling", String.valueOf(Config.DISABLE_GUI_SCALING));
-        properties.put("width", String.valueOf(Config.CAPTURE_WIDTH));
-        properties.put("height", String.valueOf(Config.CAPTURE_HEIGHT));
-        properties.put("delay", String.valueOf(Config.CAPTURE_DELAY));
-        properties.put("file_format", String.valueOf(Config.CAPTURE_FILE_FORMAT));
+    private static BooleanControllerBuilder booleanController(Option<Boolean> opt) {
+        return BooleanControllerBuilder.create(opt)
+                .formatValue(val -> getText(val ? "yes" : "no"))
+                .coloured(true);
+    }
 
-        try (BufferedWriter writer = Files.newBufferedWriter(CONFIG)) {
-            properties.store(writer, "Fabrishot screenshot config");
-        } catch (IOException exception) {
-            LogManager.getLogger(Fabrishot.class).error(exception.getMessage(), exception);
+    private static ShortFieldControllerBuilder positiveShortController(Option<Short> opt) {
+        return ShortFieldControllerBuilder.create(opt)
+                .min((short) 0);
+    }
+
+    private static ShortFieldControllerBuilder screenshotSizeController(Option<Short> opt) {
+        return positiveShortController(opt)
+                .formatValue(val -> Text.literal(val + "px"));
+    }
+
+    private static <T extends Enum<T>> ControllerBuilder<T> enumController(Class<T> enumClass, Option<T> opt) {
+        return EnumControllerBuilder.create(opt)
+                .enumClass(enumClass);
+    }
+
+    private static <T> Option.Builder<T> createOption(String key, boolean hasDescription, T defaultValue, String fieldKey) {
+        Option.Builder<T> opt = Option.<T>createBuilder()
+                .name(getText(key));
+
+        try {
+            Field field = Config.class.getField(fieldKey);
+            Config obj = get();
+            opt = opt.binding(
+                    defaultValue,
+                    () -> {
+                        try {
+                            return (T) field.get(obj);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+
+                        return null;
+                    }, val -> {
+                        try {
+                            field.set(obj, val);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                        HANDLER.save();
+                    });
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
+
+        if (hasDescription) {
+            opt = opt.description(OptionDescription.createBuilder()
+                    .text(Text.translatable("fabrishot.config" + key + ".description"))
+                    .build());
+        }
+
+        return opt;
+    }
+
+    public static void load() {
+        HANDLER.load();
+    }
+
+    public static Config get() {
+        return HANDLER.instance();
+    }
+
+    public static Screen createScreen(@Nullable Screen parent) {
+        Config config = get();
+
+        // screenshot category
+        Option<Short> screenshotWidth = Config.<Short>createOption("screenshot.size.width", false, (short) 3840, "captureWidth")
+                .controller(Config::screenshotSizeController)
+                .build();
+        Option<Short> screenshotHeight = Config.<Short>createOption("screenshot.size.height", false, (short) 2160, "captureHeight")
+                .controller(Config::screenshotSizeController)
+                .build();
+
+        Option<Short> captureDelay = Config.<Short>createOption("screenshot.delay", true, (short) 3, "captureDelay")
+                .controller(Config::positiveShortController)
+                .build();
+
+        Option<FileFormat> fileFormat = Config.<FileFormat>createOption("screenshot.format", false, FileFormat.PNG, "captureFileFormat")
+                .controller(opt -> enumController(FileFormat.class, opt))
+                .build();
+
+        // GUI category
+        Option<Boolean> guiScaling = Config.<Boolean>createOption("gui.scaling", false, false, "disableGuiScaling")
+                .controller(Config::booleanController)
+                .build();
+
+        Option<Boolean> hideHud = Config.<Boolean>createOption("gui.hide_hud", false,false, "hideHud")
+                .controller(Config::booleanController)
+                .build();
+
+        Option<NametagVisibility> nametagVisibility = Config.<NametagVisibility>createOption("gui.nametags.visibility", false, NametagVisibility.All, "nametagVisibility")
+                .controller(opt -> enumController(NametagVisibility.class, opt))
+                .build();
+        Option<OwnNametagVisibility> ownNametagVisibility = Config.<OwnNametagVisibility>createOption("gui.nametags.own", false, OwnNametagVisibility.Screenshot, "ownNametagVisibility")
+                .controller(opt -> enumController(OwnNametagVisibility.class, opt))
+                .build();
+
+        return YetAnotherConfigLib.createBuilder()
+                .title(getText("title"))
+
+                .category(ConfigCategory.createBuilder()
+                        .name(getText("screenshot"))
+                        .group(OptionGroup.createBuilder()
+                                .name(getText("screenshot.size"))
+                                .option(screenshotWidth)
+                                .option(screenshotHeight)
+                                .build()
+                        )
+                        .option(captureDelay)
+                        .option(fileFormat)
+                        .build()
+                )
+
+                .category(ConfigCategory.createBuilder()
+                        .name(getText("gui"))
+                        .option(guiScaling)
+                        .option(hideHud)
+                        .group(OptionGroup.createBuilder()
+                                .name(getText("gui.nametags"))
+                                .option(nametagVisibility)
+                                .option(ownNametagVisibility)
+                                .build()
+                        )
+                        .build()
+                )
+
+                .build()
+                .generateScreen(parent);
     }
 }

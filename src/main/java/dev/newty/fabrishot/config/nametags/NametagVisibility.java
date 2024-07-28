@@ -1,4 +1,4 @@
-package dev.newty.fabrishot.config;
+package dev.newty.fabrishot.config.nametags;
 
 public enum NametagVisibility {
     All,
