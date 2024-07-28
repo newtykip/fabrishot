@@ -1,32 +1,9 @@
-/*
- * MIT License
- *
- * Copyright (c) 2021 Ramid Khan
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+package dev.newty.fabrishot;
 
-package me.ramidzkh.fabrishot;
-
-import me.ramidzkh.fabrishot.capture.CaptureTask;
-import me.ramidzkh.fabrishot.config.Config;
-import me.ramidzkh.fabrishot.event.ScreenshotSaveCallback;
+import dev.newty.fabrishot.capture.CaptureTask;
+import dev.newty.fabrishot.config.Config;
+import dev.newty.fabrishot.event.ScreenshotSaveCallback;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
@@ -46,8 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Fabrishot {
-
+public class Fabrishot implements ClientModInitializer {
     public static final KeyBinding SCREENSHOT_BINDING = new KeyBinding(
             "key.fabrishot.screenshot",
             InputUtil.Type.KEYSYM,
@@ -57,14 +33,14 @@ public class Fabrishot {
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
     private static CaptureTask task;
 
+    public void onInitializeClient() {
+        KeyBindingHelper.registerKeyBinding(SCREENSHOT_BINDING);
+        ScreenshotSaveCallback.EVENT.register(path -> Fabrishot.printFileLink(path.toFile()));
+    }
+
     private static void printFileLink(File file) {
         Text text = Text.literal(file.getName()).formatted(Formatting.UNDERLINE).styled(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, file.getAbsolutePath())));
         MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.translatable("screenshot.success", text)));
-    }
-
-    public static void initialize() {
-        KeyBindingHelper.registerKeyBinding(SCREENSHOT_BINDING);
-        ScreenshotSaveCallback.EVENT.register(path -> Fabrishot.printFileLink(path.toFile()));
     }
 
     public static void startCapture() {

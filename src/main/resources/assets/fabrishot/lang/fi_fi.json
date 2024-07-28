@@ -1,5 +1,4 @@
 {
-  "fabrishot.config.title": "Fabrishot",
   "fabrishot.config.category": "Kuvankaappauksen asetukset",
   "fabrishot.config.custom_file_name": "Käytä omaa tiedostonimimuotoa",
   "fabrishot.config.custom_file_name.tooltip": "%time% korvataan ajalla,\n %world% maailman tai palvelimen nimellä",

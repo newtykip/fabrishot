@@ -1,7 +1,6 @@
-package me.ramidzkh.fabrishot.config;
+package dev.newty.fabrishot.config;
 
 public enum FileFormat {
-
     PNG,
     JPG,
     TGA,

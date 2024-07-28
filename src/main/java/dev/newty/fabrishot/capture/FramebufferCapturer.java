@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package me.ramidzkh.fabrishot.capture;
+package dev.newty.fabrishot.capture;
 
-import me.ramidzkh.fabrishot.MinecraftInterface;
-import me.ramidzkh.fabrishot.event.FramebufferCaptureCallback;
+import dev.newty.fabrishot.MinecraftInterface;
+import dev.newty.fabrishot.event.FramebufferCaptureCallback;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.ByteBuffer;

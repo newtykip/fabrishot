@@ -12,5 +12,6 @@
   "fabrishot.config.delay": "Capture delay",
   "fabrishot.config.delay.tooltip": "Frames to wait after resizing. Tweak for better exposure with shaders",
   "fabrishot.config.file_format": "File format",
+  "fabrishot.config.nametags": "Show nametags",
   "key.fabrishot.screenshot": "Take large screenshot"
 }

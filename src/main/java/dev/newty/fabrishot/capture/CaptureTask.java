@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package me.ramidzkh.fabrishot.capture;
+package dev.newty.fabrishot.capture;
 
-import me.ramidzkh.fabrishot.MinecraftInterface;
-import me.ramidzkh.fabrishot.config.Config;
+import dev.newty.fabrishot.MinecraftInterface;
+import dev.newty.fabrishot.config.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Util;
 

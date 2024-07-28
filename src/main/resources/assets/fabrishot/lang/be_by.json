@@ -1,5 +1,4 @@
 {
-  "fabrishot.config.title": "Fabrishot",
   "fabrishot.config.category": "Налады скрыншотаў",
   "fabrishot.config.custom_file_name": "Выкарыстоўваць іншую назву файла",
   "fabrishot.config.custom_file_name.tooltip": "Выкарыстоўваць %time% для часу,\n %world% для свету ці серверу",

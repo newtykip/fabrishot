@@ -1,13 +1,14 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "me.ramidzkh.fabrishot.mixins",
+  "package": "dev.newty.fabrishot.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "KeyboardMixin",
     "MinecraftClientMixin",
     "RenderSystemMixin",
-    "WindowAccessor"
+    "WindowAccessor",
+    "NametagMixin"
   ],
   "injectors": {
     "defaultRequire": 1

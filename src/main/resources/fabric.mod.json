@@ -8,11 +8,11 @@
     "mixins.fabrishot.json"
   ],
   "entrypoints": {
-    "main": [
-      "me.ramidzkh.fabrishot.Fabrishot::initialize"
+    "client": [
+      "dev.newty.fabrishot.Fabrishot"
     ],
     "modmenu": [
-      "me.ramidzkh.fabrishot.config.ModMenuBridge"
+      "dev.newty.fabrishot.config.ModMenuBridge"
     ]
   },
   "name": "Fabrishot",
@@ -28,14 +28,15 @@
     "cloth-config2": ">=15.0.127"
   },
   "authors": [
+    "newtykip",
     "ramidzkh"
   ],
   "license": [
     "MIT"
   ],
   "contact": {
-    "homepage": "https://github.com/ramidzkh/fabrishot#readme",
-    "issues": "https://github.com/ramidzkh/fabrishot/issues",
-    "sources": "https://github.com/ramidzkh/fabrishot"
+    "homepage": "https://github.com/newtykip/fabrishot#readme",
+    "issues": "https://github.com/newtykip/fabrishot/issues",
+    "sources": "https://github.com/newtykip/fabrishot"
   }
 }

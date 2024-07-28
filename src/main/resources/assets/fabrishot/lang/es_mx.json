@@ -1,5 +1,4 @@
 {
-  "fabrishot.config.title": "Fabrishot",
   "fabrishot.config.category": "Configuración de capturas de pantalla",
   "fabrishot.config.custom_file_name": "Usar un formato de archivo diferente",
   "fabrishot.config.custom_file_name.tooltip": "Usa %time% para la hora,\n %world% para el nombre del mundo o servidor",

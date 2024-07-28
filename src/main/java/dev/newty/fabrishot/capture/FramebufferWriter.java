@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-package me.ramidzkh.fabrishot.capture;
+package dev.newty.fabrishot.capture;
 
-import me.ramidzkh.fabrishot.config.Config;
-import me.ramidzkh.fabrishot.event.ScreenshotSaveCallback;
+import dev.newty.fabrishot.event.ScreenshotSaveCallback;
+import dev.newty.fabrishot.config.Config;
 import org.lwjgl.stb.STBIWriteCallback;
 import org.lwjgl.stb.STBImageWrite;
 
