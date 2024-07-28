@@ -35,6 +35,16 @@ public class ClothConfigBridge implements ConfigScreenFactory<Screen> {
                 .setSaveConsumer(b -> Config.HIDE_HUD = b)
                 .build());
 
+        category.addEntry(entryBuilder.startEnumSelector(Text.translatable("fabrishot.config.nametag_visibility"), NametagVisibility.class, Config.NAMETAG_VISIBILITY)
+                .setDefaultValue(NametagVisibility.All)
+                .setSaveConsumer(e -> Config.NAMETAG_VISIBILITY = e)
+                .build());
+
+        category.addEntry(entryBuilder.startBooleanToggle(Text.translatable("fabrishot.config.show_own_nametag"), Config.SHOWN_OWN_NAMETAG)
+                .setDefaultValue(true)
+                .setSaveConsumer(b -> Config.SHOWN_OWN_NAMETAG = b)
+                .build());
+
         category.addEntry(entryBuilder.startBooleanToggle(Text.translatable("fabrishot.config.save_file"), Config.SAVE_FILE)
                 .setDefaultValue(true)
                 .setSaveConsumer(b -> Config.SAVE_FILE = b)
@@ -73,11 +83,6 @@ public class ClothConfigBridge implements ConfigScreenFactory<Screen> {
         category.addEntry(entryBuilder.startEnumSelector(Text.translatable("fabrishot.config.file_format"), FileFormat.class, Config.CAPTURE_FILE_FORMAT)
                 .setDefaultValue(FileFormat.PNG)
                 .setSaveConsumer(t -> Config.CAPTURE_FILE_FORMAT = t)
-                .build());
-
-        category.addEntry(entryBuilder.startBooleanToggle(Text.translatable("fabrishot.config.nametags"), Config.SHOW_NAMETAGS)
-                .setDefaultValue(true)
-                .setSaveConsumer(b -> Config.SHOW_NAMETAGS = b)
                 .build());
 
         return builder.build();

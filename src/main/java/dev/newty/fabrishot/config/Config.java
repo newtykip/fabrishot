@@ -15,13 +15,14 @@ public class Config {
     public static String CUSTOM_FILE_NAME = "huge_%time%";
     public static boolean OVERRIDE_SCREENSHOT_KEY = false;
     public static boolean HIDE_HUD = false;
+    public static NametagVisibility NAMETAG_VISIBILITY = NametagVisibility.All;
+    public static boolean SHOWN_OWN_NAMETAG = true;
     public static boolean SAVE_FILE = true;
     public static boolean DISABLE_GUI_SCALING = false;
     public static int CAPTURE_WIDTH = 3840;
     public static int CAPTURE_HEIGHT = 2160;
     public static int CAPTURE_DELAY = 3;
     public static FileFormat CAPTURE_FILE_FORMAT = FileFormat.PNG;
-    public static boolean SHOW_NAMETAGS = true;
 
     private static final Path CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fabrishot.properties");
 
@@ -33,6 +34,8 @@ public class Config {
             Config.CUSTOM_FILE_NAME = properties.getProperty("custom_file_name", "huge_%time%");
             Config.OVERRIDE_SCREENSHOT_KEY = Boolean.parseBoolean(properties.getProperty("override_screenshot_key"));
             Config.HIDE_HUD = Boolean.parseBoolean(properties.getProperty("hide_hud"));
+            Config.NAMETAG_VISIBILITY = NametagVisibility.valueOf(properties.getProperty("nametag_visibility"));
+            Config.SHOWN_OWN_NAMETAG = Boolean.parseBoolean(properties.getProperty("show_own_nametag"));
             Config.SAVE_FILE = Boolean.parseBoolean(properties.getProperty("save_file"));
             Config.DISABLE_GUI_SCALING = Boolean.parseBoolean(properties.getProperty("disable_gui_scaling"));
             Config.CAPTURE_WIDTH = Integer.parseInt(properties.getProperty("width"));

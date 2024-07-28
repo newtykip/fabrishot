@@ -8,7 +8,8 @@
     "MinecraftClientMixin",
     "RenderSystemMixin",
     "WindowAccessor",
-    "NametagMixin"
+    "EntityRendererMixin",
+    "LivingEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

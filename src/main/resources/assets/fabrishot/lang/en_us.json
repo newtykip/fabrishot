@@ -5,6 +5,8 @@
   "fabrishot.config.custom_file_name.tooltip": "Use %time% for the time,\n %world% for world or server name",
   "fabrishot.config.override_screenshot_key": "Override normal screenshot with Fabrishot",
   "fabrishot.config.hide_hud": "Automatically hide the HUD",
+  "fabrishot.config.nametag_visibility": "Nametag visibility",
+  "fabrishot.config.show_own_nametag": "Show own nametag",
   "fabrishot.config.save_file": "Save the screenshot file",
   "fabrishot.config.disable_gui_scaling": "Disable GUI scaling",
   "fabrishot.config.width": "Screenshot width",
@@ -12,6 +14,5 @@
   "fabrishot.config.delay": "Capture delay",
   "fabrishot.config.delay.tooltip": "Frames to wait after resizing. Tweak for better exposure with shaders",
   "fabrishot.config.file_format": "File format",
-  "fabrishot.config.nametags": "Show nametags",
   "key.fabrishot.screenshot": "Take large screenshot"
 }
